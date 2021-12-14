@@ -17,6 +17,7 @@ def search_preview(headers, keywords):
         href = title['href']
         url = 'https://habr.com' + href
         text = article.find('div', class_='article-formatted-body article-formatted-body_version-2')
+        # Это для версии 2 формата статьи
         if text is not None:
             article_text = article.find_all('p')
             for paragraph in article_text:
@@ -28,6 +29,7 @@ def search_preview(headers, keywords):
                         print('__________________')
                         break
         else:
+            # Это для версии 1 формата статьи
             text = article.find('div', class_='article-formatted-body article-formatted-body_version-1')
             article_text = text.text.lower()
             for word in keywords:
@@ -56,6 +58,7 @@ def search_full(headers, keywords):
         resp.raise_for_status()
         bs = bs4.BeautifulSoup(resp.text, features='html.parser')
         main_text = bs.find('div', class_='article-formatted-body article-formatted-body_version-2')
+        # Это для версии 2 формата статьи
         if main_text is not None:
             for word in keywords:
                 query = main_text.text.lower()
@@ -65,6 +68,7 @@ def search_full(headers, keywords):
                     print('__________________')
                     break
         else:
+            # Это для версии 1 формата статьи
             main_text = bs.find('div', class_='article-formatted-body article-formatted-body_version-1')
             for word in keywords:
                 query = main_text.text.lower()
